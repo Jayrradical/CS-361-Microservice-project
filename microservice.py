@@ -48,6 +48,6 @@ def process_commands(starting_line=0):
         update_last_processed_line_number(line_number)
 
 while True:
-    time.sleep(1)  # Check for new input every second
+    time.sleep(0.2)  # Check for new input every second
     last_processed_line_number = get_last_processed_line_number()
     process_commands(last_processed_line_number)
