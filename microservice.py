@@ -1,27 +1,30 @@
 import time
 import os
 
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 def get_last_processed_line_number():
     try:
-        with open("last_line.txt", "r") as file:
+        with open(os.path.join(script_dir, "last_line.txt"), "r") as file:
             return int(file.read().strip() or 0)
     except FileNotFoundError:
         return 0
 
 def update_last_processed_line_number(line_number):
-    with open("last_line.txt", "w") as file:
+    with open(os.path.join(script_dir, "last_line.txt"), "w") as file:
         file.write(str(line_number))
 
-def process_commands(starting_line=0):
+def process_inputs(starting_line=0):
     line_number = 0
     new_lines = []
-    with open("input.txt", "r") as input_file:
+    with open(os.path.join(script_dir, "input.txt"), "r") as input_file:
         for line_number, line in enumerate(input_file, 1):
             if line_number > starting_line:
                 new_lines.append(line.strip())
 
     if new_lines:
-        with open("output.txt", 'a') as output_file:
+        with open(os.path.join(script_dir, "output.txt"), 'a') as output_file:
             for line in new_lines:
                 if "get spotify" in line:
                     print("Input received for Spotify.")
@@ -41,7 +44,6 @@ def process_commands(starting_line=0):
                 if "get youtube music" in line:
                     print("Input received for YouTube Music.")
                     output_file.write("Link to YouTube Music for artists: https://support.google.com/youtubemusic/answer/9716522?hl=en\n")
-                    
 
     # Update the last processed line number
     if line_number >= 0:
@@ -50,4 +52,4 @@ def process_commands(starting_line=0):
 while True:
     time.sleep(0.2)  # Check for new input every second
     last_processed_line_number = get_last_processed_line_number()
-    process_commands(last_processed_line_number)
+    process_inputs(last_processed_line_number)
